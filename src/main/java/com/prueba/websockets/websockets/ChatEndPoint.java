@@ -8,6 +8,7 @@ package com.prueba.websockets.websockets;
 import com.prueba.websockets.model.Message;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -46,7 +47,17 @@ public class ChatEndPoint {
     @OnMessage
     public void onMessage(Session sesion, Message mensaje)throws IOException,EncodeException{
         mensaje.setFrom(users.get(sesion.getId()));
-        broadcast(mensaje);
+        String men[]=mensaje.getContent().split("-");
+        if(men.length>1){
+            mensaje.setContent(men[1]);
+            mensaje.setTo(men[0]);
+        }
+        if(mensaje.getTo()!=null){
+            broadcast2(mensaje);
+        }else{
+            broadcast(mensaje);
+        }
+        
     }
     
     @OnClose
@@ -74,5 +85,26 @@ public class ChatEndPoint {
                 }
             }
         });
+    }
+    
+    private static void broadcast2(Message mensaje)throws IOException, EncodeException{
+        for(Map.Entry<String,String> entry:users.entrySet()){
+            if(entry.getValue().equals(mensaje.getTo())){
+                chatEndPoints.forEach(endPoint -> {
+            synchronized(endPoint){
+                try{
+                    if(endPoint.sesion.getId().equals(entry.getKey())){
+                        endPoint.sesion.getBasicRemote().sendObject(mensaje);
+                    }
+                    
+                }catch(IOException | EncodeException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+            }
+        }
+        
+        
     }
 }
