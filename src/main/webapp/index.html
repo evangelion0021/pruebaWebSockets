@@ -24,6 +24,25 @@
                 </td>
             </tr>
         </table>
+        <table>
+            <tr>
+                <td colspan="2">
+                    <input type="text" id="username2" placeholder="Username"/>
+                    <button type="button" onclick="connect2();" >Connect</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea readonly="true" rows="10" cols="80" id="log2"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" size="51" id="msg2" placeholder="Message"/>
+                    <button type="button" onclick="send2();" >Send</button>
+                </td>
+            </tr>
+        </table>
     </body>
 
     <script src="websockets.js"></script>
