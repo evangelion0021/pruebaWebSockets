@@ -22,7 +22,7 @@ import javax.websocket.server.PathParam;
  *
  * @author PC
  */
-@ServerEndpoint(value = "/chat/{username]", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
+@ServerEndpoint(value = "/chat/{username}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
 public class ChatEndPoint {
     
     private Session sesion;
